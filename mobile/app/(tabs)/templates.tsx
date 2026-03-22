@@ -15,6 +15,7 @@ import {
   listTemplatesUseCase,
   deleteTemplateUseCase,
   createExpenseUseCase,
+  reorderTemplatesUseCase,
 } from '@/src/infrastructure/di/container';
 import { TemplateListItem } from '@/src/application/template/list-templates/list-templates.query';
 import {
@@ -71,6 +72,14 @@ export default function TemplatesScreen() {
     }
   };
 
+  const handleMove = async (index: number, direction: 'up' | 'down') => {
+    const newTemplates = [...templates];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    [newTemplates[index], newTemplates[targetIndex]] = [newTemplates[targetIndex], newTemplates[index]];
+    setTemplates(newTemplates);
+    await reorderTemplatesUseCase.execute({ orderedIds: newTemplates.map((t) => t.id) });
+  };
+
   const handleDelete = (template: TemplateListItem) => {
     Alert.alert('削除確認', `「${template.name}」を削除しますか？`, [
       { text: 'キャンセル', style: 'cancel' },
@@ -104,8 +113,23 @@ export default function TemplatesScreen() {
             <Text style={styles.emptyHint}>よく使う支出を登録しておくと便利です</Text>
           </View>
         }
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <Pressable style={styles.card} onPress={() => handleUseTemplate(item)}>
+            {/* 並び替えボタン */}
+            <View style={styles.sortBtns}>
+              <TouchableOpacity
+                style={[styles.sortBtn, index === 0 && styles.sortBtnDisabled]}
+                onPress={() => handleMove(index, 'up')}
+                disabled={index === 0}>
+                <Text style={styles.sortBtnText}>▲</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.sortBtn, index === templates.length - 1 && styles.sortBtnDisabled]}
+                onPress={() => handleMove(index, 'down')}
+                disabled={index === templates.length - 1}>
+                <Text style={styles.sortBtnText}>▼</Text>
+              </TouchableOpacity>
+            </View>
             <View style={styles.cardLeft}>
               <Text style={styles.cardName}>{item.name}</Text>
               <View style={styles.badgeRow}>
@@ -178,6 +202,10 @@ const styles = StyleSheet.create({
   badgeSub: { backgroundColor: '#f0f0f0' },
   badgeText: { fontSize: 11, color: '#555' },
   cardMemo: { fontSize: 12, color: '#888', marginTop: 2 },
+  sortBtns: { justifyContent: 'center', gap: 2, marginRight: 8 },
+  sortBtn: { padding: 4 },
+  sortBtnDisabled: { opacity: 0.2 },
+  sortBtnText: { fontSize: 11, color: '#888' },
   cardRight: { alignItems: 'flex-end', justifyContent: 'space-between' },
   cardAmount: { fontSize: 15, fontWeight: '700', color: '#1a1a1a' },
   actions: { flexDirection: 'row', gap: 8, marginTop: 8 },
