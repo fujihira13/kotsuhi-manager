@@ -36,7 +36,22 @@ export default function RootLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
+          <Stack.Screen
+            name="expense/create"
+            options={{ presentation: 'modal', title: '支出を登録' }}
+          />
+          <Stack.Screen
+            name="expense/[id]"
+            options={{ presentation: 'modal', title: '支出を編集' }}
+          />
+          <Stack.Screen
+            name="template/create"
+            options={{ presentation: 'modal', title: 'テンプレートを登録' }}
+          />
+          <Stack.Screen
+            name="template/[id]"
+            options={{ presentation: 'modal', title: 'テンプレートを編集' }}
+          />
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>
