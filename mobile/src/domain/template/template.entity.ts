@@ -121,4 +121,22 @@ export class TemplateEntity {
   get updatedAt(): Date {
     return this.props.updatedAt
   }
+
+  /**
+   * テンプレートから支出登録の初期入力値を生成する
+   * 金額が未設定の場合は null を返す（画面側で入力が必要）
+   */
+  toExpenseInput(): {
+    category: string
+    subcategory: string
+    amount: number | null
+    memo: string | null
+  } {
+    return {
+      category: this.props.category.value,
+      subcategory: this.props.subcategory.value,
+      amount: this.props.amount?.value ?? null,
+      memo: this.props.memoTemplate,
+    }
+  }
 }
