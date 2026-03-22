@@ -10,20 +10,27 @@ config({ path: resolve(__dirname, '../.env') });
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const prompt = `
-Create a mobile app splash screen for "交通費ログ" (TransitLedger), a Japanese personal expense tracking app.
+Create a mobile app splash screen icon for "交通費ログ" (TransitLedger), a Japanese personal transit expense tracking app.
 
-Design specifications:
-- Portrait orientation, suitable for mobile splash screen (1080x1920)
-- Minimalist, clean design with a professional look
-- Primary accent color: teal blue (#0a7ea4)
-- White or very light background
-- Central icon: a stylized combination of a train/transit symbol and a wallet/receipt icon
-- App name in Japanese: "交通費ログ" in clean, modern typography
-- Subtitle in smaller text: "交通費・交際費の記録"
-- Subtle decorative elements: thin lines or geometric shapes suggesting movement/transit
-- No clutter, plenty of white space
-- Modern flat design style
-`;
+Canvas: 1024x1024 pixels, pure white (#FFFFFF) background.
+
+Visual composition (follow exactly):
+
+1. BACKGROUND: Pure white (#FFFFFF), flat, no shadows outside the main shape.
+
+2. MAIN SHAPE: A large rounded rectangle (90% of canvas, centered), filled with solid teal #0a7ea4. Corner radius ~22%. No gradient.
+
+3. ICON SYMBOL inside (centered, white, flat design):
+   - A sleek bullet train (shinkansen) silhouette viewed from the side. The aerodynamic nose MUST point to the RIGHT (←鼻が右向き). Smooth horizontal body, 3–4 small rectangular windows. Pure white fill.
+   - Beneath the train: a thin white horizontal line (width: 50% of card).
+   - Below the line: a bold ¥ symbol in pure white.
+   - Below the ¥: Japanese text "交通費ログ" in clean white bold sans-serif.
+
+4. The train MUST face RIGHT — the pointy aerodynamic nose is on the RIGHT side, the tail/rear is on the LEFT side.
+
+5. NO shadows, NO gradients on shapes, NO extra decorations.
+
+Style: flat design, clean, professional Japanese app icon.`;
 
 async function generateSplash() {
   console.log('🎨 スプラッシュ画像を生成中...');
@@ -43,9 +50,15 @@ async function generateSplash() {
       const imageBuffer = Buffer.from(part.inlineData.data, 'base64');
       const outputDir = resolve(__dirname, '../image');
       mkdirSync(outputDir, { recursive: true });
-      const outputPath = resolve(outputDir, 'splash.png');
+      const outputPath = resolve(outputDir, 'splash_v3.png');
       writeFileSync(outputPath, imageBuffer);
-      console.log(`✅ image/splash.png に保存しました`);
+      console.log(`✅ image/splash_v3.png に保存しました`);
+
+      // mobile/assets/images/splash-icon.png にもコピー
+      const mobileAssetsDir = resolve(__dirname, '../mobile/assets/images');
+      const splashIconPath = resolve(mobileAssetsDir, 'splash-icon.png');
+      writeFileSync(splashIconPath, imageBuffer);
+      console.log(`✅ mobile/assets/images/splash-icon.png にも保存しました`);
       return;
     }
   }
