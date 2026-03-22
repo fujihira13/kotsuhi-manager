@@ -29,6 +29,7 @@ const MAPPING = {
   'xmark': 'close',
   'star.fill': 'star',
   'star': 'star-border',
+  'gearshape.fill': 'settings',
 } as IconMapping;
 
 /**
