@@ -90,7 +90,8 @@ export default function ExpenseEditScreen() {
         satisfaction: satisfaction ?? null,
       });
       router.back();
-    } catch {
+    } catch (e) {
+      console.error('Update expense error:', e);
       Alert.alert('エラー', '更新に失敗しました');
     } finally {
       setSaving(false);
@@ -122,8 +123,11 @@ export default function ExpenseEditScreen() {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled">
 
         {/* 日付 */}
         <Text style={styles.label}>日付</Text>
@@ -223,7 +227,7 @@ const TINT = '#0a7ea4';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5' },
-  content: { padding: 16, paddingBottom: 40 },
+  content: { padding: 16, paddingBottom: 120 },
   label: { fontSize: 13, fontWeight: '600', color: '#666', marginTop: 20, marginBottom: 8 },
   input: {
     backgroundColor: '#fff',
