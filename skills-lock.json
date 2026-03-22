@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "skills": {
+    "apple-appstore-reviewer": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "computedHash": "848a1946f838e1b36f4af8b65caeea9e5bfa486d6059325520bb6124c05b0526"
+    },
+    "building-native-ui": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "a0316d2ce842d2dd8067a144e339cf502329dc7701f9f5122268fdb3d4c980f7"
+    },
+    "clean-ddd-hexagonal": {
+      "source": "ccheney/robust-skills",
+      "sourceType": "github",
+      "computedHash": "37d516cad994acaf692e6d57761601ef9477dce0bc98e8b6b76329e17afe90b6"
+    },
+    "developing-genkit-dart": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "ba0025db33c95d8b66cd6de1f4c25b8b70456fb2789ec6c97cd88d432eed3fb3"
+    },
+    "developing-genkit-js": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "4d3de47b5be279ab3b0ee6055ae541f28d1cc45f8e8986c0b5df2f8d89f4ea30"
+    },
+    "dummy-dataset": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "840611313b78b0e5df519bd95a15c7af39e251540a4e09c74604d6060b969d79"
+    },
+    "email-best-practices": {
+      "source": "resend/email-best-practices",
+      "sourceType": "github",
+      "computedHash": "84584c37f5759255ec20b3d8df7cc5d9096e99fd603dde722f239503de793b6d"
+    },
+    "expo-api-routes": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "267bd3bfa27718103a74458df1e875ff6f6db31cba2ebe1d8a527cf25da39761"
+    },
+    "expo-cicd-workflows": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "6cd9fa605a8144d424daa02489633fa0b0fcb15d74e29d0d23e6d6d894fc51df"
+    },
+    "expo-deployment": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "2a26de7ec3faaf19333ec5660152e5e711ef000a29d75324dff51967bc382755"
+    },
+    "expo-dev-client": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "ea568acdc9036b82b969159757456e9a4cdfae7f645ac2fad5fdf0f734f53568"
+    },
+    "expo-tailwind-setup": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "16c53e80cacd65369acfd8a4f5cf06a60083cc6d980127b4b2e384b81ce0e547"
+    },
+    "firebase-ai-logic": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "6ddf74ac9b3366d396e5fa85e695a7c5871e39edffc385533eaee2be159fcf03"
+    },
+    "firebase-app-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a3ba088442abf5b97281bcf3e4dd11e1f7bdefdc5bd404b4fb30f344d19742d2"
+    },
+    "firebase-auth-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3d85cfda10a68f0afabdad69d40ad83357f47acf9f5ba4d88a23182f6a59a5b4"
+    },
+    "firebase-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f19996128577803fef0ff041c8be37a858e0dae01c3f35080e932f7a61ad341c"
+    },
+    "firebase-data-connect": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "94bc7d16a4c368c9f3b29b3b26cea952a6a016c0e36b13b5805878ef2df1f7b6"
+    },
+    "firebase-firestore-enterprise-native-mode": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3da0087413ed1b75705d1197aefa162d767773827266aea10a4e60040a072a7d"
+    },
+    "firebase-firestore-standard": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "c8f877055f84a29eeece4c7949edcd623bb8f129b34cdece7e0ea8d57202cc60"
+    },
+    "firebase-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "0688a8ad6cb72149924352cc47e6cc8bf815e944b636a67b9da225cc9b025afc"
+    },
+    "firebase-local-env-setup": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "bb96442dbc29cb15cd6a82fb5771309bc8ff64c668f4a0c51ccc28b2da468218"
+    },
+    "gluestack-ui-v4": {
+      "source": "gluestack/agent-skills",
+      "sourceType": "github",
+      "computedHash": "81407cacc7d3eff17da0399f1bb84db6118363283fd07a2217030d75f702388b"
+    },
+    "job-stories": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "b4576e0cb3a98da5619393644b16f2885c06f101ff99dd22f4368767db0b0122"
+    },
+    "native-data-fetching": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "523901a0f2dfddc91f6c3b09320e240abfe7c81b6f7277e14774ec39ac0c544b"
+    },
+    "outcome-roadmap": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "81dfe79f81d5acc689b1144cda14297efec63005154dd6fe3cd600f4576a661c"
+    },
+    "prioritization-frameworks": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "0767054f99ae816c1e21fcd25f84cd17b0f78aff033355a87264505db49dad64"
+    },
+    "react-email": {
+      "source": "resend/react-email",
+      "sourceType": "github",
+      "computedHash": "5abde077d6f10a25727a52f8d3ad5bf8c56e8ab17c277e3de32a0a3c32bf6f06"
+    },
+    "resend": {
+      "source": "resend/resend-skills",
+      "sourceType": "github",
+      "computedHash": "a98f756d26215e6f1cb626bede5205afc2e139e7c733cf83e7643fba7f7f334e"
+    },
+    "resend-design-skills": {
+      "source": "resend/design-skills",
+      "sourceType": "github",
+      "computedHash": "332dd7c0d36088b0edffa89b0d0609cbeb52a3f263823c56c7c12907d745d624"
+    },
+    "revenuecat": {
+      "source": "revenuecat/revenuecat-skill",
+      "sourceType": "github",
+      "computedHash": "822f7d865c06e85d608dd5e1031ee7b47e0cb15d0a52711e3e1eaf9f7a9ce605"
+    },
+    "sd-adapter-implementation": {
+      "source": "hidaken991018/ddd-workflow-skills",
+      "sourceType": "github",
+      "computedHash": "4b4a2242976a4e2763dda76cfb8f5efec0320e5b2b94e4a4054e47bfb97f74ef"
+    },
+    "sd-application-implementation": {
+      "source": "hidaken991018/ddd-workflow-skills",
+      "sourceType": "github",
+      "computedHash": "23077c998d2d47b5612232cacbeb4e16f4e6a455cc178e70d8970542840185c8"
+    },
+    "sd-basic-design": {
+      "source": "hidaken991018/ddd-workflow-skills",
+      "sourceType": "github",
+      "computedHash": "6b8cb349b5387434fa814bef62b2d972b96c4b914a22b6fcd2b0a5d9238c5340"
+    },
+    "sd-domain-implementation": {
+      "source": "hidaken991018/ddd-workflow-skills",
+      "sourceType": "github",
+      "computedHash": "64a0946300bb705d9fe43a8c5656b097a0bf3787723f192f98b969370343d26b"
+    },
+    "sd-integration-test": {
+      "source": "hidaken991018/ddd-workflow-skills",
+      "sourceType": "github",
+      "computedHash": "5e4a2bace20ce50a82c5b98c29b18aada00087676c0095ffafdf032e949d12fb"
+    },
+    "send-email": {
+      "source": "resend/resend-skills",
+      "sourceType": "github"
+    },
+    "sprint-plan": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "ffe8c793276c753d75eca75fda6f98a5654c4f3e3b1f9a1c4803271823cebd1a"
+    },
+    "upgrading-expo": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "7ccc3de855963fcfd8fa25a81a0baa98e165be0ae46577b736367c104959c30a"
+    },
+    "use-dom": {
+      "source": "expo/skills",
+      "sourceType": "github",
+      "computedHash": "63a18bc2e07d18313aa9749bbb59c542c9b141424c56bd5514907be276c5bf80"
+    },
+    "use-railway": {
+      "source": "railwayapp/railway-skills",
+      "sourceType": "github",
+      "computedHash": "276b1889ce15a894d12d0c6d9aa434aea228a41b5565c69f2b214871b540f063"
+    },
+    "user-stories": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "f430b0828102f2f54eb5d1658726e8feaacae9f04afad6ab56e5d6334e4f7dd7"
+    },
+    "vercel-cli-with-tokens": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "e1e480328b12b79669604c8849845be7582f6c0a6da1e8d1d6d1ec1a2806dbf0"
+    },
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "10eb4ec94577b79ae98c63ce3e7f35f8a6a06436a4011bff083b397de6960eeb"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "e218e50fe7057a4db91390e579c7db5aafac2394c31a3d8e5fa9444c8fa00726"
+    },
+    "vercel-react-native-skills": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a804b4e848059822638c390359976f7021380bcefb1469d473aa4e9202c15ecb"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "d8e7d3afe37dcc8a97b99ffb5afdb4d0919ae0092ea8b68f44eb201f035e33ac"
+    },
+    "wwas": {
+      "source": "phuryn/pm-skills",
+      "sourceType": "github",
+      "computedHash": "5b51da69db655652538777dc7cc30e08865f1b2e17232b8850bf58871ee744be"
+    }
+  }
+}
