@@ -1,11 +1,48 @@
 import { useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as Sharing from 'expo-sharing';
 
-import { clearAllDataUseCase } from '@/src/infrastructure/di/container';
+import { clearAllDataUseCase, exportExpensesUseCase } from '@/src/infrastructure/di/container';
+import { currentMonthString } from '@/src/presentation/constants';
 
 export default function SettingsScreen() {
   const [clearing, setClearing] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExport = () => {
+    Alert.alert('エクスポート', 'エクスポートする期間を選択してください', [
+      { text: 'キャンセル', style: 'cancel' },
+      {
+        text: '今月のみ',
+        onPress: async () => {
+          setExporting(true);
+          try {
+            const { fileUri } = await exportExpensesUseCase.execute({ month: currentMonthString() });
+            await Sharing.shareAsync(fileUri, { mimeType: 'text/csv', UTI: 'public.comma-separated-values-text' });
+          } catch {
+            Alert.alert('エラー', 'エクスポートに失敗しました');
+          } finally {
+            setExporting(false);
+          }
+        },
+      },
+      {
+        text: '全期間',
+        onPress: async () => {
+          setExporting(true);
+          try {
+            const { fileUri } = await exportExpensesUseCase.execute({});
+            await Sharing.shareAsync(fileUri, { mimeType: 'text/csv', UTI: 'public.comma-separated-values-text' });
+          } catch {
+            Alert.alert('エラー', 'エクスポートに失敗しました');
+          } finally {
+            setExporting(false);
+          }
+        },
+      },
+    ]);
+  };
 
   const handleClearAll = () => {
     Alert.alert(
@@ -48,9 +85,17 @@ export default function SettingsScreen() {
         </Text>
       </View>
 
-      {/* 危険な操作 */}
+      {/* データ管理 */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>データ管理</Text>
+        <TouchableOpacity
+          style={[styles.exportRow, exporting && styles.exportRowDisabled]}
+          onPress={handleExport}
+          disabled={exporting}>
+          <Text style={styles.exportText}>
+            {exporting ? 'エクスポート中...' : 'CSVエクスポート'}
+          </Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[styles.dangerRow, clearing && styles.dangerRowDisabled]}
           onPress={handleClearAll}
@@ -98,4 +143,15 @@ const styles = StyleSheet.create({
   },
   dangerRowDisabled: { opacity: 0.5 },
   dangerText: { fontSize: 16, fontWeight: '600', color: '#e53935' },
+  exportRow: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#0a7ea4',
+    marginBottom: 10,
+  },
+  exportRowDisabled: { opacity: 0.5 },
+  exportText: { fontSize: 16, fontWeight: '600', color: '#0a7ea4' },
 });

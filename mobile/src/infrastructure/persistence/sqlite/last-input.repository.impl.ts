@@ -14,13 +14,14 @@ export class DrizzleLastInputRepository implements LastInputRepository {
       .from(lastInput)
       .where(eq(lastInput.id, LAST_INPUT_ID))
     if (!result[0]) {
-      return { category: null, subcategory: null, memo: null }
+      return { category: null, subcategory: null, memo: null, amount: null }
     }
     const record = result[0]
     return {
       category: (record.category as LastInput['category']) ?? null,
       subcategory: (record.subcategory as LastInput['subcategory']) ?? null,
       memo: record.memo ?? null,
+      amount: record.amount ?? null,
     }
   }
 
@@ -32,6 +33,7 @@ export class DrizzleLastInputRepository implements LastInputRepository {
         category: data.category,
         subcategory: data.subcategory,
         memo: data.memo,
+        amount: data.amount,
       })
       .onConflictDoUpdate({
         target: lastInput.id,
@@ -39,6 +41,7 @@ export class DrizzleLastInputRepository implements LastInputRepository {
           category: data.category,
           subcategory: data.subcategory,
           memo: data.memo,
+          amount: data.amount,
         },
       })
   }

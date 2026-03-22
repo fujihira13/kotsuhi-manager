@@ -20,6 +20,7 @@ import {
   getFrequentAmountsUseCase,
 } from '@/src/infrastructure/di/container';
 import { FrequentAmountItem } from '@/src/application/frequent-amount/get-frequent-amounts/get-frequent-amounts.query';
+import AmountInputWithSuggest from '@/src/presentation/components/AmountInputWithSuggest';
 import { CategoryValue } from '@/src/domain/shared/value-objects/category.vo';
 import { SubcategoryValue } from '@/src/domain/shared/value-objects/subcategory.vo';
 import {
@@ -27,6 +28,8 @@ import {
   SUBCATEGORY_LABELS,
   TRANSPORTATION_SUBCATEGORIES,
   ENTERTAINMENT_SUBCATEGORIES,
+  TRIP_TYPE_LABELS,
+  TripTypeValue,
   todayString,
 } from '@/src/presentation/constants';
 
@@ -47,6 +50,7 @@ export default function ExpenseCreateScreen() {
   const [satisfaction, setSatisfaction] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [frequentAmounts, setFrequentAmounts] = useState<FrequentAmountItem[]>([]);
+  const [tripType, setTripType] = useState<TripTypeValue>('one-way');
 
   useEffect(() => {
     const loadLastInput = async () => {
@@ -61,7 +65,6 @@ export default function ExpenseCreateScreen() {
       const last = await getLastInputUseCase.execute();
       if (last.category) setCategory(last.category);
       if (last.subcategory) setSubcategory(last.subcategory);
-      if (last.memo) setMemo(last.memo);
     };
     const loadFrequentAmounts = async () => {
       const result = await getFrequentAmountsUseCase.execute({ windowDays: 90, limit: 5 });
@@ -77,6 +80,28 @@ export default function ExpenseCreateScreen() {
   const handleCategoryChange = (cat: CategoryValue) => {
     setCategory(cat);
     setSubcategory(cat === 'transportation' ? 'train' : 'meal');
+    if (cat !== 'transportation') setTripType('one-way');
+  };
+
+  const handleUsePrevMemo = async () => {
+    const last = await getLastInputUseCase.execute();
+    if (last.memo) {
+      setMemo(last.memo);
+    } else {
+      Alert.alert('前回メモなし', '前回入力したメモがありません');
+    }
+  };
+
+  const handleUseLastInput = async () => {
+    const last = await getLastInputUseCase.execute();
+    if (!last.category) {
+      Alert.alert('前回データなし', '前回の入力記録がありません');
+      return;
+    }
+    setCategory(last.category);
+    setSubcategory(last.subcategory ?? 'train');
+    setMemo(last.memo ?? '');
+    if (last.amount) setAmount(String(last.amount));
   };
 
   const handleSave = async () => {
@@ -111,10 +136,12 @@ export default function ExpenseCreateScreen() {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
+        automaticallyAdjustKeyboardInsets
         keyboardShouldPersistTaps="handled">
 
         {/* 日付 */}
@@ -162,6 +189,11 @@ export default function ExpenseCreateScreen() {
           </Modal>
         )}
 
+        {/* 前回と同じ内容を使用 */}
+        <TouchableOpacity style={styles.lastInputBtn} onPress={handleUseLastInput}>
+          <Text style={styles.lastInputBtnText}>↩ 前回と同じ内容を使用</Text>
+        </TouchableOpacity>
+
         {/* カテゴリ */}
         <Text style={styles.label}>カテゴリ</Text>
         <View style={styles.chipRow}>
@@ -192,33 +224,46 @@ export default function ExpenseCreateScreen() {
           ))}
         </View>
 
-        {/* 金額 */}
-        <Text style={styles.label}>金額</Text>
-        <View style={styles.amountRow}>
-          <Text style={styles.yen}>¥</Text>
-          <TextInput
-            style={[styles.input, { flex: 1 }]}
-            value={amount}
-            onChangeText={setAmount}
-            keyboardType="number-pad"
-            placeholder="0"
-          />
-        </View>
-        {frequentAmounts.length > 0 && (
-          <View style={styles.frequentRow}>
-            {frequentAmounts.map((item) => (
-              <TouchableOpacity
-                key={item.amount}
-                style={styles.frequentChip}
-                onPress={() => setAmount(String(item.amount))}>
-                <Text style={styles.frequentChipText}>¥{item.amount.toLocaleString()}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+        {/* 片道/往復（交通費のみ） */}
+        {category === 'transportation' && (
+          <>
+            <Text style={styles.label}>片道 / 往復</Text>
+            <View style={styles.chipRow}>
+              {(['one-way', 'round-trip'] as TripTypeValue[]).map((t) => (
+                <TouchableOpacity
+                  key={t}
+                  style={[styles.chip, tripType === t && styles.chipActive]}
+                  onPress={() => {
+                    if (t === 'round-trip' && tripType === 'one-way') {
+                      const n = parseInt(amount, 10);
+                      if (!isNaN(n) && n >= 1) setAmount(String(n * 2));
+                    }
+                    setTripType(t);
+                  }}>
+                  <Text style={[styles.chipText, tripType === t && styles.chipTextActive]}>
+                    {TRIP_TYPE_LABELS[t]}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </>
         )}
 
+        {/* 金額 */}
+        <Text style={styles.label}>金額</Text>
+        <AmountInputWithSuggest
+          value={amount}
+          onChangeText={setAmount}
+          frequentAmounts={frequentAmounts}
+        />
+
         {/* メモ */}
-        <Text style={styles.label}>メモ（任意）</Text>
+        <View style={styles.memoLabelRow}>
+          <Text style={styles.label}>メモ（任意）</Text>
+          <TouchableOpacity onPress={handleUsePrevMemo}>
+            <Text style={styles.memoQuoteBtn}>前回を引用</Text>
+          </TouchableOpacity>
+        </View>
         <TextInput
           style={[styles.input, styles.memoInput]}
           value={memo}
@@ -307,18 +352,6 @@ const styles = StyleSheet.create({
   chipActive: { backgroundColor: TINT },
   chipText: { fontSize: 14, color: '#444' },
   chipTextActive: { color: '#fff', fontWeight: '600' },
-  amountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  yen: { fontSize: 20, fontWeight: '600', color: '#333' },
-  frequentRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
-  frequentChip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-    backgroundColor: '#e8f4f8',
-    borderWidth: 1,
-    borderColor: '#b3d9eb',
-  },
-  frequentChipText: { fontSize: 13, color: '#0a7ea4', fontWeight: '600' },
   memoInput: { minHeight: 80, textAlignVertical: 'top', paddingTop: 12 },
   stars: { flexDirection: 'row', gap: 8 },
   starOn: { fontSize: 32, color: '#f5a623' },
@@ -332,4 +365,22 @@ const styles = StyleSheet.create({
   },
   saveBtnDisabled: { opacity: 0.6 },
   saveBtnText: { fontSize: 17, fontWeight: '700', color: '#fff' },
+  memoLabelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 0,
+  },
+  memoQuoteBtn: { fontSize: 12, color: TINT, fontWeight: '600' },
+  lastInputBtn: {
+    marginTop: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10,
+    backgroundColor: '#f0f7fb',
+    borderWidth: 1,
+    borderColor: '#b3d9eb',
+    alignSelf: 'flex-start',
+  },
+  lastInputBtnText: { fontSize: 13, color: TINT, fontWeight: '600' },
 });

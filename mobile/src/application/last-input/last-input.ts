@@ -9,6 +9,7 @@ export interface LastInput {
   category: CategoryValue | null
   subcategory: SubcategoryValue | null
   memo: string | null
+  amount: number | null
 }
 
 export interface LastInputRepository {

@@ -44,4 +44,5 @@ export const lastInput = sqliteTable('last_input', {
   category: text('category'), // 'transportation' | 'entertainment' | null
   subcategory: text('subcategory'),
   memo: text('memo'),
+  amount: integer('amount'), // 前回入力した金額（任意）
 })

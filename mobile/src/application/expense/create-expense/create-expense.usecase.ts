@@ -26,6 +26,7 @@ export class CreateExpenseUseCase {
       category: expense.category.value,
       subcategory: expense.subcategory.value,
       memo: expense.memo,
+      amount: expense.amount.value,
     })
 
     return { id: expense.id.toString() }

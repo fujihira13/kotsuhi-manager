@@ -1,4 +1,10 @@
 import { CategoryValue } from '@/src/domain/shared/value-objects/category.vo'
+
+export type TripTypeValue = 'one-way' | 'round-trip'
+export const TRIP_TYPE_LABELS: Record<TripTypeValue, string> = {
+  'one-way': '片道',
+  'round-trip': '往復',
+}
 import {
   SubcategoryValue,
   TransportationSubcategoryValue,

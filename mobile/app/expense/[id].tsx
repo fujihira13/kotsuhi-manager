@@ -19,7 +19,9 @@ import {
   getExpenseByIdUseCase,
   updateExpenseUseCase,
   deleteExpenseUseCase,
+  getFrequentAmountsUseCase,
 } from '@/src/infrastructure/di/container';
+import { FrequentAmountItem } from '@/src/application/frequent-amount/get-frequent-amounts/get-frequent-amounts.query';
 import { CategoryValue } from '@/src/domain/shared/value-objects/category.vo';
 import { SubcategoryValue } from '@/src/domain/shared/value-objects/subcategory.vo';
 import {
@@ -42,6 +44,7 @@ export default function ExpenseEditScreen() {
   const [memo, setMemo] = useState('');
   const [satisfaction, setSatisfaction] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
+  const [frequentAmounts, setFrequentAmounts] = useState<FrequentAmountItem[]>([]);
 
   useEffect(() => {
     const load = async () => {
@@ -60,7 +63,12 @@ export default function ExpenseEditScreen() {
         setLoading(false);
       }
     };
+    const loadFrequent = async () => {
+      const result = await getFrequentAmountsUseCase.execute({ windowDays: 90, limit: 5 });
+      setFrequentAmounts(result);
+    };
     load();
+    loadFrequent();
   }, [id]);
 
   const subcategories =
@@ -126,10 +134,12 @@ export default function ExpenseEditScreen() {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.content}
+        automaticallyAdjustKeyboardInsets
         keyboardShouldPersistTaps="handled">
 
         {/* 日付 */}
@@ -213,7 +223,27 @@ export default function ExpenseEditScreen() {
             keyboardType="number-pad"
             placeholder="0"
           />
+          <TouchableOpacity
+            style={styles.doubleBtn}
+            onPress={() => {
+              const n = parseInt(amount, 10);
+              if (!isNaN(n) && n >= 1) setAmount(String(n * 2));
+            }}>
+            <Text style={styles.doubleBtnText}>×2</Text>
+          </TouchableOpacity>
         </View>
+        {frequentAmounts.length > 0 && (
+          <View style={styles.frequentRow}>
+            {frequentAmounts.map((item) => (
+              <TouchableOpacity
+                key={item.amount}
+                style={styles.frequentChip}
+                onPress={() => setAmount(String(item.amount))}>
+                <Text style={styles.frequentChipText}>¥{item.amount.toLocaleString()}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
 
         {/* メモ */}
         <Text style={styles.label}>メモ（任意）</Text>
@@ -304,6 +334,25 @@ const styles = StyleSheet.create({
   chipTextActive: { color: '#fff', fontWeight: '600' },
   amountRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   yen: { fontSize: 20, fontWeight: '600', color: '#333' },
+  frequentRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
+  frequentChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    backgroundColor: '#e8f4f8',
+    borderWidth: 1,
+    borderColor: '#b3d9eb',
+  },
+  frequentChipText: { fontSize: 13, color: '#0a7ea4', fontWeight: '600' },
+  doubleBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 10,
+    backgroundColor: '#e8f4f8',
+    borderWidth: 1,
+    borderColor: '#b3d9eb',
+  },
+  doubleBtnText: { fontSize: 14, color: '#0a7ea4', fontWeight: '700' },
   memoInput: { minHeight: 80, textAlignVertical: 'top', paddingTop: 12 },
   stars: { flexDirection: 'row', gap: 8 },
   starOn: { fontSize: 32, color: '#f5a623' },

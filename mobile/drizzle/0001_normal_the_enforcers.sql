@@ -1,0 +1,1 @@
+ALTER TABLE `last_input` ADD `amount` integer;

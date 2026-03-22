@@ -24,6 +24,7 @@ import { ReorderTemplatesUseCase } from '@/src/application/template/reorder-temp
 
 import { GetLastInputUseCase } from '@/src/application/last-input/get-last-input.usecase'
 import { ClearAllDataUseCase } from '@/src/application/clear-all-data/clear-all-data.usecase'
+import { ExportExpensesUseCase } from '@/src/application/expense/export-expenses/export-expenses.usecase'
 
 // ── Repository ───────────────────────────────────────────────────────────────
 const expenseRepository = new DrizzleExpenseRepository(db)
@@ -48,6 +49,9 @@ export const reorderTemplatesUseCase = new ReorderTemplatesUseCase(templateRepos
 
 // ── LastInput UseCase ────────────────────────────────────────────────────────
 export const getLastInputUseCase = new GetLastInputUseCase(lastInputRepository)
+
+// ── Export UseCase ───────────────────────────────────────────────────────────
+export const exportExpensesUseCase = new ExportExpensesUseCase(expenseRepository)
 
 // ── ClearAllData UseCase ─────────────────────────────────────────────────────
 export const clearAllDataUseCase = new ClearAllDataUseCase(
