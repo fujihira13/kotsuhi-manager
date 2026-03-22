@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   Modal,
@@ -27,6 +27,13 @@ export default function AmountInputWithSuggest({
   const [focused, setFocused] = useState(false);
   const [inputLayout, setInputLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });
   const containerRef = useRef<View>(null);
+  const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (blurTimerRef.current) clearTimeout(blurTimerRef.current);
+    };
+  }, []);
 
   const suggestions = frequentAmounts.filter((item) => {
     if (!value) return true;
@@ -35,9 +42,17 @@ export default function AmountInputWithSuggest({
 
   const showSuggestions = focused && suggestions.length > 0 && value !== String(suggestions[0]?.amount);
 
+  const handleFocus = () => {
+    // measureInWindow で画面上の絶対座標を取得（onLayout のローカル座標ではなく）
+    containerRef.current?.measureInWindow((x, y, width, height) => {
+      setInputLayout({ x, y, width, height });
+    });
+    setFocused(true);
+  };
+
   const handleBlur = () => {
     // タップ先が FlatList 項目の場合に先に onPress が走るよう遅延
-    setTimeout(() => setFocused(false), 150);
+    blurTimerRef.current = setTimeout(() => setFocused(false), 150);
   };
 
   const handleSelect = (amount: number) => {
@@ -49,11 +64,7 @@ export default function AmountInputWithSuggest({
     <>
       <View
         ref={containerRef}
-        style={[styles.wrapper, style]}
-        onLayout={(e) => {
-          const { x, y, width, height } = e.nativeEvent.layout;
-          setInputLayout({ x, y, width, height });
-        }}>
+        style={[styles.wrapper, style]}>
         <Text style={styles.yen}>¥</Text>
         <TextInput
           style={styles.input}
@@ -61,7 +72,7 @@ export default function AmountInputWithSuggest({
           onChangeText={onChangeText}
           keyboardType="number-pad"
           placeholder="0"
-          onFocus={() => setFocused(true)}
+          onFocus={handleFocus}
           onBlur={handleBlur}
         />
       </View>

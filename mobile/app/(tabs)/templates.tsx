@@ -47,14 +47,18 @@ export default function TemplatesScreen() {
           {
             text: '登録する',
             onPress: async () => {
-              await createExpenseUseCase.execute({
-                date: todayString(),
-                amount: template.amount!,
-                category: template.category,
-                subcategory: template.subcategory,
-                memo: template.memoTemplate ?? null,
-              });
-              router.push('/');
+              try {
+                await createExpenseUseCase.execute({
+                  date: todayString(),
+                  amount: template.amount!,
+                  category: template.category,
+                  subcategory: template.subcategory,
+                  memo: template.memoTemplate ?? null,
+                });
+                router.push('/');
+              } catch {
+                Alert.alert('エラー', '登録に失敗しました');
+              }
             },
           },
         ],
@@ -84,8 +88,12 @@ export default function TemplatesScreen() {
         text: '削除',
         style: 'destructive',
         onPress: async () => {
-          await deleteTemplateUseCase.execute({ id: template.id });
-          load();
+          try {
+            await deleteTemplateUseCase.execute({ id: template.id });
+            load();
+          } catch {
+            Alert.alert('エラー', '削除に失敗しました');
+          }
         },
       },
     ]);

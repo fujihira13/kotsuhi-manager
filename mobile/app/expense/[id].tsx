@@ -116,8 +116,12 @@ export default function ExpenseEditScreen() {
         text: '削除',
         style: 'destructive',
         onPress: async () => {
-          await deleteExpenseUseCase.execute({ id });
-          router.back();
+          try {
+            await deleteExpenseUseCase.execute({ id });
+            router.back();
+          } catch {
+            Alert.alert('エラー', '削除に失敗しました');
+          }
         },
       },
     ]);
