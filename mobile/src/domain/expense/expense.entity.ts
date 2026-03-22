@@ -120,4 +120,9 @@ export class ExpenseEntity {
   get updatedAt(): Date {
     return this.props.updatedAt
   }
+
+  /** 指定期間（YYYY-MM-DD）内に含まれるか判定する */
+  isInDateRange(from: string, to: string): boolean {
+    return this.props.date.value >= from && this.props.date.value <= to
+  }
 }
