@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import {
   Alert,
-  FlatList,
   Pressable,
   StyleSheet,
   Text,
@@ -10,6 +9,7 @@ import {
 } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DraggableFlatList, { RenderItemParams } from 'react-native-draggable-flatlist';
 
 import {
   listTemplatesUseCase,
@@ -72,12 +72,9 @@ export default function TemplatesScreen() {
     }
   };
 
-  const handleMove = async (index: number, direction: 'up' | 'down') => {
-    const newTemplates = [...templates];
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    [newTemplates[index], newTemplates[targetIndex]] = [newTemplates[targetIndex], newTemplates[index]];
-    setTemplates(newTemplates);
-    await reorderTemplatesUseCase.execute({ orderedIds: newTemplates.map((t) => t.id) });
+  const handleDragEnd = async ({ data }: { data: TemplateListItem[] }) => {
+    setTemplates(data);
+    await reorderTemplatesUseCase.execute({ orderedIds: data.map((t) => t.id) });
   };
 
   const handleDelete = (template: TemplateListItem) => {
@@ -103,33 +100,25 @@ export default function TemplatesScreen() {
         </TouchableOpacity>
       </View>
 
-      <FlatList
+      <DraggableFlatList
         data={templates}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.list}
+        onDragEnd={handleDragEnd}
         ListEmptyComponent={
           <View style={styles.empty}>
             <Text style={styles.emptyText}>テンプレートがありません</Text>
             <Text style={styles.emptyHint}>よく使う支出を登録しておくと便利です</Text>
           </View>
         }
-        renderItem={({ item, index }) => (
-          <Pressable style={styles.card} onPress={() => handleUseTemplate(item)}>
-            {/* 並び替えボタン */}
-            <View style={styles.sortBtns}>
-              <TouchableOpacity
-                style={[styles.sortBtn, index === 0 && styles.sortBtnDisabled]}
-                onPress={() => handleMove(index, 'up')}
-                disabled={index === 0}>
-                <Text style={styles.sortBtnText}>▲</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.sortBtn, index === templates.length - 1 && styles.sortBtnDisabled]}
-                onPress={() => handleMove(index, 'down')}
-                disabled={index === templates.length - 1}>
-                <Text style={styles.sortBtnText}>▼</Text>
-              </TouchableOpacity>
-            </View>
+        renderItem={({ item, drag, isActive }: RenderItemParams<TemplateListItem>) => (
+          <Pressable
+            style={[styles.card, isActive && styles.cardActive]}
+            onPress={() => handleUseTemplate(item)}>
+            {/* ドラッグハンドル */}
+            <TouchableOpacity onLongPress={drag} style={styles.dragHandle}>
+              <Text style={styles.dragHandleText}>⠿</Text>
+            </TouchableOpacity>
             <View style={styles.cardLeft}>
               <Text style={styles.cardName}>{item.name}</Text>
               <View style={styles.badgeRow}>
@@ -195,6 +184,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 2,
   },
+  cardActive: { opacity: 0.85, shadowOpacity: 0.15, elevation: 6 },
   cardLeft: { flex: 1 },
   cardName: { fontSize: 15, fontWeight: '600', marginBottom: 6 },
   badgeRow: { flexDirection: 'row', gap: 6, marginBottom: 4 },
@@ -202,10 +192,8 @@ const styles = StyleSheet.create({
   badgeSub: { backgroundColor: '#f0f0f0' },
   badgeText: { fontSize: 11, color: '#555' },
   cardMemo: { fontSize: 12, color: '#888', marginTop: 2 },
-  sortBtns: { justifyContent: 'center', gap: 2, marginRight: 8 },
-  sortBtn: { padding: 4 },
-  sortBtnDisabled: { opacity: 0.2 },
-  sortBtnText: { fontSize: 11, color: '#888' },
+  dragHandle: { justifyContent: 'center', paddingHorizontal: 8 },
+  dragHandleText: { fontSize: 20, color: '#ccc' },
   cardRight: { alignItems: 'flex-end', justifyContent: 'space-between' },
   cardAmount: { fontSize: 15, fontWeight: '700', color: '#1a1a1a' },
   actions: { flexDirection: 'row', gap: 8, marginTop: 8 },

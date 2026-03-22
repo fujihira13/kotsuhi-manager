@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   ScrollView,
   StyleSheet,
@@ -10,6 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import {
@@ -37,6 +39,7 @@ export default function ExpenseCreateScreen() {
   }>();
 
   const [date, setDate] = useState(todayString());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [category, setCategory] = useState<CategoryValue>('transportation');
   const [subcategory, setSubcategory] = useState<SubcategoryValue>('train');
   const [amount, setAmount] = useState('');
@@ -117,17 +120,47 @@ export default function ExpenseCreateScreen() {
         {/* 日付 */}
         <Text style={styles.label}>日付</Text>
         <View style={styles.dateRow}>
-          <TextInput
-            style={[styles.input, { flex: 1 }]}
-            value={date}
-            onChangeText={setDate}
-            placeholder="YYYY-MM-DD"
-            keyboardType="numbers-and-punctuation"
-          />
+          <TouchableOpacity
+            style={[styles.input, styles.dateButton, { flex: 1 }]}
+            onPress={() => setShowDatePicker(true)}>
+            <Text style={styles.dateButtonText}>{date}</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.todayBtn} onPress={() => setDate(todayString())}>
             <Text style={styles.todayBtnText}>今日</Text>
           </TouchableOpacity>
         </View>
+        {Platform.OS === 'android' && showDatePicker && (
+          <DateTimePicker
+            value={new Date(date + 'T00:00:00')}
+            mode="date"
+            display="default"
+            onChange={(_, selected) => {
+              setShowDatePicker(false);
+              if (selected) setDate(selected.toISOString().split('T')[0]);
+            }}
+          />
+        )}
+        {Platform.OS === 'ios' && (
+          <Modal transparent visible={showDatePicker} animationType="slide">
+            <View style={styles.modalOverlay}>
+              <View style={styles.modalContent}>
+                <View style={styles.modalHeader}>
+                  <TouchableOpacity onPress={() => setShowDatePicker(false)}>
+                    <Text style={styles.modalDone}>完了</Text>
+                  </TouchableOpacity>
+                </View>
+                <DateTimePicker
+                  value={new Date(date + 'T00:00:00')}
+                  mode="date"
+                  display="spinner"
+                  onChange={(_, selected) => {
+                    if (selected) setDate(selected.toISOString().split('T')[0]);
+                  }}
+                />
+              </View>
+            </View>
+          </Modal>
+        )}
 
         {/* カテゴリ */}
         <Text style={styles.label}>カテゴリ</Text>
@@ -236,6 +269,27 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
   },
   dateRow: { flexDirection: 'row', gap: 8, alignItems: 'center' },
+  dateButton: { justifyContent: 'center' },
+  dateButtonText: { fontSize: 16, color: '#1a1a1a' },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'flex-end',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingBottom: 24,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#e0e0e0',
+  },
+  modalDone: { fontSize: 16, color: '#0a7ea4', fontWeight: '600' },
   todayBtn: {
     backgroundColor: '#e8f4f8',
     paddingHorizontal: 14,
