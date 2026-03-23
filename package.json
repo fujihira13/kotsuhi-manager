@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "generate-splash": "node scripts/generate-splash.js"
+    "generate-splash": "node scripts/generate-splash.js",
+    "generate-feature-graphic": "node scripts/generate-feature-graphic.js"
   },
   "dependencies": {
     "@google/genai": "^1.10.0",
