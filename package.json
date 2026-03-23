@@ -5,10 +5,14 @@
   "private": true,
   "scripts": {
     "generate-splash": "node scripts/generate-splash.js",
-    "generate-feature-graphic": "node scripts/generate-feature-graphic.js"
+    "generate-feature-graphic": "node scripts/generate-feature-graphic.js",
+    "resize-store-assets": "node scripts/resize-store-assets.js"
   },
   "dependencies": {
     "@google/genai": "^1.10.0",
     "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }
