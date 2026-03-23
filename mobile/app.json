@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kotsuhi.manager"
+      "bundleIdentifier": "com.kotsuhi.manager",
+      "buildNumber": "1"
     },
     "android": {
       "package": "com.kotsuhi.manager",
