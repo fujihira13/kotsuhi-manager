@@ -10,7 +10,7 @@ config({ path: resolve(__dirname, '../.env') });
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const prompt = `
-Create a feature graphic banner for "交通費マネージャー" (TransitLedger), a Japanese personal transit expense tracking app.
+Create a feature graphic banner for "交通費・交際費ログ" (TransitLedger), a Japanese personal expense tracking app for transit and entertainment expenses.
 
 Canvas: exactly 1024x500 pixels, landscape orientation.
 
@@ -18,13 +18,13 @@ Background: smooth horizontal gradient from light blue #E6F4FE on the left to te
 
 Left area (leftmost 40% of canvas, vertically centered):
   - A large rounded square (about 180x180px) with solid #0a7ea4 fill and white border (~4px)
-  - Inside the rounded square: a white flat shinkansen bullet train silhouette viewed from the side, aerodynamic nose pointing RIGHT
+  - Inside the rounded square: a white flat shinkansen bullet train silhouette viewed from the side. The train must face RIGHT — the pointed aerodynamic nose is on the RIGHT side, the tail is on the LEFT side. The train is moving rightward toward the text.
   - Below the train inside the square: a thin white horizontal line
   - Below the line: bold white ¥ symbol
 
 Right area (rightmost 55% of canvas, vertically centered, left-aligned):
-  - App name "交通費マネージャー" in large (52px) bold white sans-serif font, top line
-  - Tagline "交通費をかんたんに記録・管理" in smaller (26px) white sans-serif font, below app name, slight transparency or lighter weight
+  - App name "交通費・交際費ログ" in large (48px) bold white sans-serif font, top line
+  - Tagline "交通費・交際費をかんたんに記録・管理" in smaller (24px) white sans-serif font, below app name, slight transparency or lighter weight
 
 Style: flat design, clean, professional. No drop shadows, no complex textures. Safe zone: keep all text and logo at least 40px from any edge.`;
 

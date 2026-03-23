@@ -2,7 +2,7 @@
 
 ## 概要
 
-このドキュメントは「交通費マネージャー」Android アプリを Google Play Store に提出するまでの手順書です。
+このドキュメントは「交通費・交際費ログ」Android アプリを Google Play Store に提出するまでの手順書です。
 
 **アプリ情報**
 - パッケージ名: `com.kotsuhi.manager`

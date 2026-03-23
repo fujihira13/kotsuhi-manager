@@ -35,7 +35,7 @@ eas login
 2. 「マイ App」→「+」→「新規 App」をクリック
 3. 以下の情報を入力:
    - プラットフォーム: iOS
-   - 名前: 交通費マネージャー
+   - 名前: 交通費・交際費ログ
    - プライマリ言語: 日本語
    - バンドル ID: `com.kotsuhi.manager`
    - SKU: `kotsuhi-manager`（任意の一意な文字列）
