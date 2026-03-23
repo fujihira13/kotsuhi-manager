@@ -3,6 +3,9 @@
     "name": "交通費マネージャー",
     "slug": "kotsuhi-manager",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
