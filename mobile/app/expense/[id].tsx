@@ -29,6 +29,7 @@ import {
   SUBCATEGORY_LABELS,
   TRANSPORTATION_SUBCATEGORIES,
   ENTERTAINMENT_SUBCATEGORIES,
+  toLocalDateString,
 } from '@/src/presentation/constants';
 
 export default function ExpenseEditScreen() {
@@ -160,7 +161,7 @@ export default function ExpenseEditScreen() {
             display="default"
             onChange={(_, selected) => {
               setShowDatePicker(false);
-              if (selected) setDate(selected.toISOString().split('T')[0]);
+              if (selected) setDate(toLocalDateString(selected));
             }}
           />
         )}
@@ -178,7 +179,7 @@ export default function ExpenseEditScreen() {
                   mode="date"
                   display="spinner"
                   onChange={(_, selected) => {
-                    if (selected) setDate(selected.toISOString().split('T')[0]);
+                    if (selected) setDate(toLocalDateString(selected));
                   }}
                 />
               </View>
