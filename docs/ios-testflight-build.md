@@ -58,6 +58,13 @@ eas build --platform ios --profile preview
 
 ビルド完了後、EAS ダッシュボード（https://expo.dev）でステータスを確認できます。
 
+### iOS ビルドプロファイル一覧
+
+| プロファイル | コマンド | 用途 |
+|---|---|---|
+| preview | `eas build --platform ios --profile preview` | TestFlight 配布（テスト用） |
+| production | `eas build --platform ios --profile production` | App Store リリース用 |
+
 ---
 
 ## Step 4: TestFlight にアップロード
@@ -66,6 +73,16 @@ eas build --platform ios --profile preview
 ```bash
 eas submit --platform ios --latest
 ```
+
+または submit プロファイルを指定する場合:
+```bash
+eas submit --platform ios --profile production --latest
+```
+
+> **初回実行時**: `mobile/eas.json` の `submit.production.ios` に以下を設定してから実行してください。
+> - `appleId`: Apple ID（メールアドレス）
+> - `ascAppId`: App Store Connect のアプリ数字 ID（アプリ詳細ページの URL 末尾に表示）
+> - `appleTeamId`: Apple Developer Portal の「Membership」で確認できる 10 桁の英数字
 
 または EAS ダッシュボードから手動で App Store Connect にアップロードすることも可能です。
 
@@ -83,18 +100,12 @@ eas submit --platform ios --latest
 
 ## ビルド番号の更新
 
-新しいビルドをアップロードするたびに `app.json` の `buildNumber` を増やしてください:
+`eas.json` の `production` プロファイルで `autoIncrement: true` が設定されているため、
+`eas build --profile production` 実行時に `buildNumber` は EAS が自動でインクリメントします。
+手動での変更は不要です。
 
-```json
-"ios": {
-  "supportsTablet": true,
-  "bundleIdentifier": "com.kotsuhi.manager",
-  "buildNumber": "2"
-}
-```
-
-> `version`（例: `1.0.0`）はユーザーに表示されるバージョン。
-> `buildNumber` は App Store Connect が内部管理に使う番号で、同一 `version` でも毎回増やす必要があります。
+> `version`（例: `1.0.0`）はユーザーに表示されるバージョン。変更が必要な場合は `mobile/app.json` の `version` を更新してください。
+> `buildNumber` は EAS が自動管理します（`eas.json` の `autoIncrement: true`）。
 
 ---
 
