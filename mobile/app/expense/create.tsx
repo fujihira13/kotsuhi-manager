@@ -32,6 +32,7 @@ import {
   TripTypeValue,
   todayString,
   toLocalDateString,
+  formatDateLong,
 } from '@/src/presentation/constants';
 
 export default function ExpenseCreateScreen() {
@@ -151,7 +152,7 @@ export default function ExpenseCreateScreen() {
           <TouchableOpacity
             style={[styles.input, styles.dateButton, { flex: 1 }]}
             onPress={() => setShowDatePicker(true)}>
-            <Text style={styles.dateButtonText}>{date}</Text>
+            <Text style={styles.dateButtonText}>{formatDateLong(date)}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.todayBtn} onPress={() => setDate(todayString())}>
             <Text style={styles.todayBtnText}>今日</Text>

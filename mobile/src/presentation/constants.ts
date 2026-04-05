@@ -82,3 +82,18 @@ export function nextMonth(month: string): string {
   const d = new Date(year, m, 1)
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`
 }
+
+export function formatDateShort(date: string): string {
+  const [, m, d] = date.split('-')
+  return `${parseInt(m)}/${parseInt(d)}`
+}
+
+export function formatDateLong(date: string): string {
+  const [y, m, d] = date.split('-')
+  return `${y}年${parseInt(m)}月${parseInt(d)}日`
+}
+
+export function formatDateMD(date: string): string {
+  const [, m, d] = date.split('-')
+  return `${parseInt(m)}月${parseInt(d)}日`
+}

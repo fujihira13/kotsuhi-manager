@@ -22,6 +22,7 @@ import {
   SUBCATEGORY_LABELS,
   formatAmount,
   formatMonth,
+  formatDateShort,
   currentMonthString,
   prevMonth,
   nextMonth,
@@ -98,7 +99,7 @@ export default function ExpenseListScreen() {
             style={styles.card}
             onPress={() => router.push(`/expense/${item.id}`)}>
             <View style={styles.cardLeft}>
-              <Text style={styles.cardDate}>{item.date.slice(5)}</Text>
+              <Text style={styles.cardDate}>{formatDateShort(item.date)}</Text>
               <View style={styles.cardBadge}>
                 <Text style={styles.cardBadgeText}>{SUBCATEGORY_LABELS[item.subcategory as keyof typeof SUBCATEGORY_LABELS]}</Text>
               </View>

@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getSummaryUseCase } from '@/src/infrastructure/di/container';
 import { SummaryResult } from '@/src/application/summary/get-summary/get-summary.query';
-import { CATEGORY_LABELS, SUBCATEGORY_LABELS, formatAmount } from '@/src/presentation/constants';
+import { CATEGORY_LABELS, SUBCATEGORY_LABELS, formatAmount, formatDateMD } from '@/src/presentation/constants';
 
 type Period = 'this_month' | 'last_month' | 'last_3_months';
 
@@ -54,7 +54,7 @@ export default function SummaryScreen() {
               <Text style={styles.totalLabel}>合計金額</Text>
               <Text style={styles.totalAmount}>{formatAmount(summary.totalAmount)}</Text>
               <Text style={styles.totalPeriod}>
-                {summary.period.from} 〜 {summary.period.to}
+                {formatDateMD(summary.period.from)} 〜 {formatDateMD(summary.period.to)}
               </Text>
             </View>
 

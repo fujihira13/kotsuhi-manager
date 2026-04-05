@@ -30,6 +30,7 @@ import {
   TRANSPORTATION_SUBCATEGORIES,
   ENTERTAINMENT_SUBCATEGORIES,
   toLocalDateString,
+  formatDateLong,
 } from '@/src/presentation/constants';
 
 export default function ExpenseEditScreen() {
@@ -152,7 +153,7 @@ export default function ExpenseEditScreen() {
         <TouchableOpacity
           style={[styles.input, styles.dateButton]}
           onPress={() => setShowDatePicker(true)}>
-          <Text style={styles.dateButtonText}>{date}</Text>
+          <Text style={styles.dateButtonText}>{formatDateLong(date)}</Text>
         </TouchableOpacity>
         {Platform.OS === 'android' && showDatePicker && (
           <DateTimePicker
