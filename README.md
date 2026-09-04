@@ -50,7 +50,6 @@
 - SQLite
 - Drizzle ORM
 - Jest
-- EAS Build
 
 ## アプリの構成
 
